@@ -5,918 +5,580 @@
 ![TrustHire](https://img.shields.io/badge/TrustHire-Trusted%20Recruitment-blueviolet?style=for-the-badge)
 ![NestJS](https://img.shields.io/badge/NestJS-11-red?style=flat-square&logo=nestjs)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
 ![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?style=flat-square&logo=prisma)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql)
 ![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=flat-square&logo=redis)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwind-css)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker)
 
-### Connect with verified companies and discover opportunities that match your skills.
+**A trusted, full-stack recruitment platform connecting candidates with verified companies.**
+
+*No fake listings. No scams. Just trusted connections.*
 
 </div>
 
-<div align="center">
+---
 
-Connect with verified companies and discover opportunities that match your skills. No fake listings, no scams — just trusted connections.
+## 📚 Table of Contents
 
-</div>
+- [Project Overview](#-project-overview)
+- [Features](#-features)
+- [Technology Stack](#-technology-stack)
+- [System Architecture](#-system-architecture)
+- [Application Workflow](#-application-workflow)
+- [Installation](#-installation)
+- [Environment Variables](#-environment-variables)
+- [Usage](#-usage)
+- [Test Credentials](#-test-credentials)
+- [API Overview](#-api-overview)
+- [Database Overview](#-database-overview)
+- [Project Structure](#-project-structure)
+- [Docker](#-docker)
+- [Scripts](#-scripts)
+- [Security](#-security)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-Overview
+---
 
-TrustHire is a full-stack recruitment platform designed to eliminate fraudulent job listings and untrusted employers. It provides a multi-level verification system for companies, role-based dashboards for candidates, recruiters, and admins, and comprehensive audit logging for transparency.
+## 📖 Project Overview
 
-Why TrustHire?
+TrustHire is a full-stack recruitment platform designed to reduce fraudulent job listings and improve trust between candidates, recruiters, and employers.
 
-Verified Companies — Every company undergoes a rigorous verification process (PENDING → UNDER_REVIEW → APPROVED/REJECTED) before posting jobs.
+The platform uses company verification, role-based access control, OTP verification, audit logging, blacklist management, risk scoring, and secure authentication to create a safer recruitment environment.
 
-Trusted Employers — Candidates connect only with approved and verified employers.
+### Core Roles
 
-Fraud Prevention — Blacklist management, suspicious activity detection, and company risk scoring.
+| Role | Responsibilities |
+|---|---|
+| 👤 **Candidate** | Create a profile, search jobs, apply for jobs, track applications, and communicate with recruiters |
+| 💼 **Recruiter** | Register a company, complete verification, publish jobs, review applications, and manage hiring |
+| 🛡️ **Admin** | Verify companies, manage users, monitor audit logs, handle blacklists, and view platform analytics |
 
-Full Audit Trail — Every action (login, job posting, application status change, etc.) is logged for complete transparency.
+---
 
-OTP Verification — Email and phone number verification via OTP to ensure genuine users.
+## ✨ Features
 
-Features
+### 🔐 Authentication & User Management
 
-Authentication & User Management
+- User registration and login
+- JWT access and refresh tokens
+- Logout and refresh-token invalidation
+- Email verification through OTP
+- Phone verification through OTP
+- Password hashing with **Argon2**
+- Role-based access control
+- Candidate, Recruiter, and Admin roles
+- Profile management
+- Skills and experience management
+- Education information
+- Resume and LinkedIn profile support
 
-Register, login, logout with JWT access + refresh tokens
+### 🏢 Company Management
 
-Email verification via OTP
+- Company registration
+- Recruiter-to-company association
+- Company profile management
+- Verification workflow
+- Verification document uploads
+- Company risk scoring
+- Blacklisting with reason tracking
+- Automatic job deactivation when a company is blocked
 
-Phone verification via OTP
+Company verification flow:
 
-Profile management (skills, experience, education, resume, LinkedIn)
-
-Role-based access control (Candidate, Recruiter, Admin)
-
-Password hashing with Argon2
-
-Company Module
-
-Company registration with recruiter association
-
-Multi-step verification workflow (PENDING → UNDER_REVIEW → APPROVED/REJECTED/BLOCKED)
-
-Document upload support for verification
-
-Company profile management
-
-Blacklisting with reason tracking
-
-Risk score computation
-
-Job Module
-
-Create, update, delete jobs (Recruiters only, company must be APPROVED)
-
-Advanced search with filters (keyword, location, job type, salary range, skills)
-
-Pagination support
-
-Auto-deactivation of jobs when the company is blocked
-
-Application Module
-
-Apply for jobs with resume & cover letter
-
-Duplicate application prevention
-
+```text
+PENDING
+   ↓
+UNDER_REVIEW
+   ↓
+APPROVED / REJECTED / BLOCKED
+💼 Job Management
+Create jobs for approved companies
+Update and delete jobs
+Search and filter jobs
+Keyword filtering
+Location filtering
+Job-type filtering
+Salary-range filtering
+Skills filtering
+Pagination
 Deadline validation
+Automatic deactivation for blocked companies
+📄 Application Management
+Apply to jobs
+Resume and cover-letter support
+Duplicate-application prevention
+Application deadline validation
+Application tracking
+Recruiter application management
 
-Application status tracking (PENDING → REVIEWED → SHORTLISTED → INTERVIEW_SCHEDULED → ACCEPTED/REJECTED)
+Application lifecycle:
 
-Recruiter can view and manage applications for their company's jobs
-
-Admin Module
-
-Dashboard with statistics (users, companies, jobs, applications)
-
-Company verification (approve/reject/block)
-
-User management (block/unblock)
-
-Audit logs viewer with search & filters
-
-Reports & analytics (suspicious activities, top companies by jobs/applications)
-
+PENDING
+   ↓
+REVIEWED
+   ↓
+SHORTLISTED
+   ↓
+INTERVIEW_SCHEDULED
+   ↓
+ACCEPTED / REJECTED
+🛡️ Admin Management
+Admin dashboard
+Platform statistics
+Company verification
+Approve/reject/block companies
+User management
+Block/unblock users
+Audit-log viewer
+Suspicious-activity monitoring
+Reports and analytics
 Blacklist management
-
-Additional Features
-
-Messaging system between users
-
-Notification system
-
-Comprehensive audit logging for all critical actions
-
-Pagination, filtering, and search across modules
-
-Tech Stack
-
-Backend
-
-Technology
-
-Purpose
-
-NestJS 11
-
-Node.js framework for building scalable server-side applications
-
-Prisma ORM 5
-
-Type-safe database client and migrations
-
-PostgreSQL 16
-
-Primary database
-
-Redis 7
-
-Caching, session management, and OTP storage (via BullMQ)
-
-Passport.js
-
-Authentication strategies (JWT)
-
-Argon2
-
-Password hashing
-
-JWT
-
-Access tokens (15m) + Refresh tokens (7d)
-
-BullMQ
-
-Background job processing
-
-Helmet
-
-Security headers
-
-Class-validator / Class-transformer
-
-DTO validation
-
+💬 Communication
+User-to-user messaging
+Notifications
+Application-status notifications
+Comprehensive audit logging
+🛠️ Technology Stack
 Frontend
-
-Technology
-
-Purpose
-
-Next.js 16
-
-React framework with App Router
-
-React 19
-
-UI library
-
-Tailwind CSS v4
-
-Utility-first CSS framework
-
-shadcn/ui
-
-Reusable component library
-
-TanStack Query
-
-Server state management
-
-Axios
-
-HTTP client
-
-Zod
-
-Schema validation
-
-React Hook Form
-
-Form management
-
-Framer Motion
-
-Animations
-
-Lucide React
-
-Icons
-
-Infrastructure
-
-Technology
-
-Purpose
-
-Docker Compose
-
-PostgreSQL 16 + Redis 7 + BE + FE + nginx containers
-
-AWS SDK
-
-S3 file uploads (resumes, documents, profile pictures)
-
-Architecture
-
-┌──────────────────────────────────────────────────────────────────┐
-│                     TrustHire Platform                           │
-├────────────────────┬─────────────────────────────────────────────┤
-│   Frontend         │   Backend                                   │
-│   (Next.js 16)     │   (NestJS 11)                               │
-│   Port: 3000       │   Port: 3001                                │
-├────────────────────┼─────────────────────────────────────────────┤
-│                    │   Modules:                                  │
-│  ┌──────────────┐  │    ┌──────────┐  ┌──────────┐  ┌──────────┐ │
-│  │  Public      │  │    │  Auth    │  │  Company │  │   Job    │ │
-│  │  Pages       │  │    │  Module  │  │  Module  │  │  Module  │ │
-│  │  (Home,      │◄─┼───►│          │  │          │  │          │ │
-│  │  Jobs)       │  │    └──────────┘  └──────────┘  └──────────┘ │
-│  └──────────────┘  │    ┌──────────┐  ┌──────────┐  ┌──────────┐ │
-│  ┌──────────────┐  │    │Application│ │  Admin   │  │ Prisma   │ │
-│  │ Dashboard    │  │    │  Module  │  │  Module  │  │  Service │ │
-│  │ (Role-based) │◄─┼───►│          │  │          │  │          │ │
-│  └──────────────┘  │    └──────────┘  └──────────┘  └──────────┘ │
-│                    │                         │                   │
-└────────────────────┴─────────────────────────┼───────────────────┘
-                                               │
-                                    ┌──────────▼──────────┐
-                                    │   PostgreSQL 16      │
-                                    │   + Redis 7          │
-                                    │   (Docker)           │
-                                    └─────────────────────┘
-
-Getting Started
-
+Technology	Purpose
+Next.js 16	React framework using the App Router
+React 19	UI library
+TypeScript	Type-safe development
+Tailwind CSS v4	Utility-first styling
+shadcn/ui	Reusable UI components
+TanStack Query	Server-state management
+Axios	HTTP client
+Zod	Schema validation
+React Hook Form	Form management
+Framer Motion	UI animations
+Lucide React	Icons
+Backend
+Technology	Purpose
+NestJS 11	Scalable Node.js backend framework
+TypeScript	Type-safe backend development
+Prisma ORM 5	Database ORM and migrations
+Passport.js	Authentication strategies
+JWT	Access and refresh token authentication
+Argon2	Secure password hashing
+BullMQ	Background job processing
+Helmet	Security headers
+Class Validator	DTO validation
+Class Transformer	Request transformation
+Database & Infrastructure
+Technology	Purpose
+PostgreSQL 16	Primary relational database
+Redis 7	Caching, OTP storage, and queues
+Docker Compose	Container orchestration
+nginx	Reverse proxy
+AWS S3	File storage
+Git	Version control
+🏗️ System Architecture
+                         ┌──────────────────────┐
+                         │      End Users       │
+                         │ Candidate / Recruiter│
+                         │        / Admin       │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │      Next.js 16      │
+                         │     React 19 FE      │
+                         │      Port 3000       │
+                         └──────────┬───────────┘
+                                    │
+                                    │ REST API
+                                    ▼
+                         ┌──────────────────────┐
+                         │      NestJS 11       │
+                         │      Backend API     │
+                         │      Port 3001       │
+                         └──────────┬───────────┘
+                                    │
+              ┌─────────────────────┼─────────────────────┐
+              │                     │                     │
+              ▼                     ▼                     ▼
+       ┌──────────────┐      ┌──────────────┐      ┌──────────────┐
+       │ Prisma ORM   │      │   Redis 7    │      │   AWS S3     │
+       │              │      │ Cache / OTP  │      │ File Storage │
+       └──────┬───────┘      │   / BullMQ   │      └──────────────┘
+              │              └──────────────┘
+              ▼
+       ┌──────────────┐
+       │ PostgreSQL16 │
+       │   Database   │
+       └──────────────┘
+🔄 Application Workflow
+🚀 Installation
 Prerequisites
 
-Node.js v18+
+Install:
 
+Node.js 18+
 npm or yarn
-
-Docker Desktop (for PostgreSQL & Redis)
-
+Docker Desktop
 Git
 
-Setting Up Docker, PostgreSQL & Redis
+Verify:
 
-The project uses Docker Compose to run PostgreSQL and Redis as containers, so you don't need to install them directly on your machine.
-
-1. Install Docker
-
-Download and install Docker Desktop from docker.com:
-
-Windows / macOS — Install Docker Desktop and make sure it is running.
-
-Linux — Install the Docker Engine + Docker Compose plugin:
-
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-
-Verify the installation:
-
+node --version
+npm --version
 docker --version
 docker compose version
+git --version
+1. Clone the Repository
+git clone <your-repository-url>
+cd trusthire
+2. Configure Environment
+cp .env.example .env
 
-2. Start PostgreSQL & Redis
+Update .env with your configuration.
 
-Make sure Docker Desktop is running, then from the project root:
-
+3. Start PostgreSQL and Redis
 docker compose up -d postgres redis
 
-This creates and starts two containers:
+Check containers:
 
-Container
-
-Image
-
-Port
-
-Purpose
-
-trusthire-postgres
-
-postgres:16-alpine
-
-5432
-
-PostgreSQL database
-
-trusthire-redis
-
-redis:7-alpine
-
-6379
-
-Redis cache / OTP storage
-
-Note: Run this from the project root (where docker-compose.yml lives) so the containers are created with the name, ports, and credentials defined in that file.
-
-3. Verify the containers
-
-# List running containers (should show trusthire-postgres and trusthire-redis with status "Up")
 docker ps
 
-# Test PostgreSQL connection
+Test PostgreSQL:
+
 docker exec -it trusthire-postgres pg_isready -U trusthire
 
-# Test Redis connection
-docker exec -it trusthire-redis redis-cli ping   # should reply PONG
+Test Redis:
 
-4. Stop / reset the containers
+docker exec -it trusthire-redis redis-cli ping
 
-# Stop PostgreSQL & Redis (data is preserved in volumes)
-docker compose stop postgres redis
+Expected:
 
-# Start them again later
-docker compose start postgres redis
-
-# Completely remove containers (data is still kept in volumes)
-docker compose rm
-
-# Remove containers AND delete all data (fresh start)
-docker compose down -v
-
-The default database credentials come from the POSTGRES_* variables in your .env file. If none are set, Compose falls back to user trusthire, password trusthire_secret_2024, database trusthire.
-
-Quick Start (Local Development)
-
-# 1. Clone the repository
-git clone <your-repo-url> trusthire
-cd trusthire
-
-# 2. Set up environment variables
-cp .env.example .env
-# Edit .env with your configuration
-
-# 3. Start infrastructure (PostgreSQL + Redis)
-docker compose up -d postgres redis
-
-# 4. Install all dependencies
+PONG
+4. Install Dependencies
 npm run install:all
-
-# 5. Run database migrations & seed
+5. Run Database Migration
 cd be
 npx prisma migrate dev
+6. Seed the Database
 node prisma/seed.js
 cd ..
-
-# 6. Start development servers (BE + FE concurrently)
+7. Start the Application
 npm run dev
+⚙️ Environment Variables
 
-The backend runs at http://localhost:3001 and the frontend at http://localhost:3000.
+Create .env from .env.example.
 
-Quick Start (Full Docker Stack)
+Example:
 
-# 1. Configure environment
-cp .env.example .env
-# Fill in DATABASE_URL, JWT secrets, ENCRYPTION_KEY, etc.
-
-# 2. Build & start everything (PostgreSQL, Redis, BE, FE, nginx)
-docker compose up -d --build
-
-The app is served at http://localhost via nginx.
-
-Individual Commands
-
-# Run only backend
-npm run dev:be
-
-# Run only frontend
-npm run dev:fe
-
-# Build backend
-npm run build:be
-
-# Build frontend
-npm run build:fe
-
-# Backend unit tests
-cd be && npm run test
-
-# Backend e2e tests
-cd be && npm run test:e2e
-
-Environment Variables
-
-Create a .env file in the root directory based on .env.example:
-
-# PostgreSQL (used by docker-compose)
 POSTGRES_USER=trusthire
 POSTGRES_PASSWORD=change-me-strong-password
 POSTGRES_DB=trusthire
 
-# Backend database URL (service name "postgres" inside the compose network)
 DATABASE_URL=postgresql://trusthire:change-me-strong-password@postgres:5432/trusthire?schema=public
 
-# Backend secrets - generate with: openssl rand -hex 32
 JWT_ACCESS_SECRET=
 JWT_REFRESH_SECRET=
+
 ENCRYPTION_KEY=
 
-# Allowed browser origin for the backend (public site URL)
 CORS_ORIGIN=http://localhost
 
-# Frontend API base URL, inlined into the JS bundle at build time
 NEXT_PUBLIC_API_URL=http://localhost/api/v1
 
-API Overview
+Generate secure secrets:
 
-All API routes are prefixed with /api/v1.
+openssl rand -hex 32
 
-Authentication (/api/v1/auth)
+⚠️ Never commit .env or production secrets to GitHub.
 
-Method
+▶️ Usage
+Development
 
-Endpoint
+Start both frontend and backend:
 
-Description
+npm run dev
+Frontend
+npm run dev:fe
 
-POST
+Runs at:
 
-/auth/register
+http://localhost:3000
+Backend
+npm run dev:be
 
-Register a new user
+Runs at:
 
-POST
+http://localhost:3001
+🔑 Test Credentials
 
-/auth/login
+These accounts are for local development and testing only.
 
-Login with email & password
-
-POST
-
-/auth/logout
-
-Logout (invalidates refresh token)
-
-POST
-
-/auth/refresh
-
-Refresh access token
-
-POST
-
-/auth/verify-email
-
-Verify email with OTP
-
-POST
-
-/auth/verify-phone
-
-Verify phone with OTP
-
-POST
-
-/auth/resend-otp
-
-Resend verification OTP
-
-GET
-
-/auth/profile
-
-Get authenticated user's profile
-
-PATCH
-
-/auth/profile
-
-Update profile
-
-Companies (/api/v1/companies)
-
-Method
-
-Endpoint
-
-Description
-
-POST
-
-/companies/register
-
-Register a new company
-
-GET
-
-/companies/profile
-
-Get company profile
-
-GET
-
-/companies/status
-
-Get company verification status
-
-PATCH
-
-/companies/profile
-
-Update company profile
-
-POST
-
-/companies/upload-documents
-
-Upload verification documents
-
-Jobs (/api/v1/jobs)
-
-Method
-
-Endpoint
-
-Description
-
-GET
-
-/jobs
-
-List/search jobs (with filters)
-
-GET
-
-/jobs/:id
-
-Get job details
-
-POST
-
-/jobs
-
-Create job (Recruiter)
-
-PATCH
-
-/jobs/:id
-
-Update job (Recruiter)
-
-DELETE
-
-/jobs/:id
-
-Delete job (Recruiter)
-
-Applications (/api/v1/applications)
-
-Method
-
-Endpoint
-
-Description
-
-POST
-
-/applications
-
-Apply for a job
-
-GET
-
-/applications/me
-
-Get user's applications
-
-GET
-
-/applications/company
-
-Get applications for recruiter's company
-
-GET
-
-/applications/job/:jobId
-
-Get applications for a specific job
-
-PATCH
-
-/applications/:id/status
-
-Update application status
-
-Admin (/api/v1/admin)
-
-Method
-
-Endpoint
-
-Description
-
-GET
-
-/admin/dashboard
-
-Dashboard statistics
-
-GET
-
-/admin/companies
-
-List all companies
-
-POST
-
-/admin/companies
-
-Create a company (admin)
-
-PATCH
-
-/admin/companies/:id
-
-Update company details
-
-DELETE
-
-/admin/companies/:id
-
-Delete a company
-
-POST
-
-/admin/approve-company/:id
-
-Approve company verification
-
-POST
-
-/admin/reject-company/:id
-
-Reject company verification
-
-POST
-
-/admin/block-company/:id
-
-Block a company
-
-POST
-
-/admin/block-user/:id
-
-Block/unblock a user
-
-GET
-
-/admin/audit-logs
-
-View audit logs
-
-GET
-
-/admin/reports
-
-Reports and analytics
-
-GET
-
-/admin/blacklist
-
-View/Manage blacklisted companies
-
-Database Schema
-
-User (candidate/recruiter/admin)
-  ├── Recruiter (company association)
-  ├── Application (job applications)
-  ├── AuditLog
-  ├── Sent Messages
-  └── Received Messages
-
-Company
-  ├── Recruiters
-  ├── Jobs
-  └── AuditLogs
-
-Job
-  └── Applications
-
-BlacklistedCompany (domain/email-based blacklist)
-
-Notification (per user)
-
-Key Enums
-
-Enum
-
-Values
-
-UserRole
-
-CANDIDATE, RECRUITER, ADMIN
-
-VerificationStatus
-
-UNVERIFIED, EMAIL_VERIFIED, PHONE_VERIFIED, FULLY_VERIFIED
-
-CompanyStatus
-
-PENDING, UNDER_REVIEW, APPROVED, REJECTED, BLOCKED
-
-JobType
-
-FULL_TIME, PART_TIME, CONTRACT, INTERNSHIP, REMOTE, FREELANCE
-
-ApplicationStatus
-
-PENDING, REVIEWED, SHORTLISTED, INTERVIEW_SCHEDULED, ACCEPTED, REJECTED, WITHDRAWN
-
-AuditAction
-
-LOGIN, REGISTER, COMPANY_REGISTER, COMPANY_APPROVED, JOB_POSTED, APPLICATION_SUBMITTED, SUSPICIOUS_ACTIVITY, etc.
-
-Test Credentials
-
-Use the following seeded accounts for local development and testing.
-
-Login: Use the Username / Email value as the username when signing in.
-
-Role
-
-Username / Email
-
-Password
-
+Role	Username / Email	Password
+👑 Admin	admin@trusthire.dev	Admin@123
+👤 Candidate	candidate@trusthire.dev	Candidate@123
+💼 Recruiter	recruiter@trusthire.dev	Recruiter@123
 Admin
-
-admin@trusthire.dev
-
-Admin@123
-
-Candidate
-
-candidate@trusthire.dev
-
-Candidate@123
-
-Recruiter
-
-recruiter@trusthire.dev
-
-Recruiter@123
-
-Login Examples
-
-Admin
-
 Username: admin@trusthire.dev
 Password: Admin@123
-
 Candidate
-
 Username: candidate@trusthire.dev
 Password: Candidate@123
-
 Recruiter
-
 Username: recruiter@trusthire.dev
 Password: Recruiter@123
 
-Note: These credentials are for local development and testing only. Do not use them in production.
+⚠️ Do not use these seeded credentials in production.
 
-The candidate user is pre-configured with skills (React, TypeScript, Node.js, PostgreSQL), 3 years of experience, and a sample bio.
+🔌 API Overview
 
-Project Structure
+All API endpoints use:
 
+/api/v1
+Authentication
+Method	Endpoint	Description
+POST	/auth/register	Register user
+POST	/auth/login	Login
+POST	/auth/logout	Logout
+POST	/auth/refresh	Refresh token
+POST	/auth/verify-email	Verify email
+POST	/auth/verify-phone	Verify phone
+POST	/auth/resend-otp	Resend OTP
+GET	/auth/profile	Get profile
+PATCH	/auth/profile	Update profile
+Companies
+Method	Endpoint	Description
+POST	/companies/register	Register company
+GET	/companies/profile	Get company
+GET	/companies/status	Get verification status
+PATCH	/companies/profile	Update company
+POST	/companies/upload-documents	Upload documents
+Jobs
+Method	Endpoint	Description
+GET	/jobs	Search jobs
+GET	/jobs/:id	Job details
+POST	/jobs	Create job
+PATCH	/jobs/:id	Update job
+DELETE	/jobs/:id	Delete job
+Applications
+Method	Endpoint	Description
+POST	/applications	Apply for job
+GET	/applications/me	My applications
+GET	/applications/company	Company applications
+GET	/applications/job/:jobId	Job applications
+PATCH	/applications/:id/status	Update application
+Admin
+Method	Endpoint	Description
+GET	/admin/dashboard	Dashboard statistics
+GET	/admin/companies	List companies
+POST	/admin/companies	Create company
+PATCH	/admin/companies/:id	Update company
+DELETE	/admin/companies/:id	Delete company
+POST	/admin/approve-company/:id	Approve company
+POST	/admin/reject-company/:id	Reject company
+POST	/admin/block-company/:id	Block company
+POST	/admin/block-user/:id	Block/unblock user
+GET	/admin/audit-logs	Audit logs
+GET	/admin/reports	Reports
+GET	/admin/blacklist	Blacklist management
+🗄️ Database Overview
+User
+├── Recruiter
+├── Application
+├── AuditLog
+├── Sent Messages
+└── Received Messages
+
+Company
+├── Recruiters
+├── Jobs
+└── AuditLogs
+
+Job
+└── Applications
+
+BlacklistedCompany
+└── Domain / Email blacklist
+
+Notification
+└── User notifications
+Main Enums
+Enum	Values
+UserRole	CANDIDATE, RECRUITER, ADMIN
+VerificationStatus	UNVERIFIED, EMAIL_VERIFIED, PHONE_VERIFIED, FULLY_VERIFIED
+CompanyStatus	PENDING, UNDER_REVIEW, APPROVED, REJECTED, BLOCKED
+JobType	FULL_TIME, PART_TIME, CONTRACT, INTERNSHIP, REMOTE, FREELANCE
+ApplicationStatus	PENDING, REVIEWED, SHORTLISTED, INTERVIEW_SCHEDULED, ACCEPTED, REJECTED, WITHDRAWN
+📁 Project Structure
 trusthire/
-├── docker-compose.yml       # PostgreSQL + Redis + BE + FE + nginx
-├── docker/                  # Additional Docker configurations (nginx)
-├── package.json             # Root workspace scripts (concurrently)
 │
-├── be/                      # Backend - NestJS
+├── docker-compose.yml
+├── docker/
+├── package.json
+│
+├── be/
 │   ├── prisma/
-│   │   ├── schema.prisma    # Database schema
-│   │   ├── seed.js          # Seed data
-│   │   └── migrations/      # Database migrations
+│   │   ├── schema.prisma
+│   │   ├── seed.js
+│   │   └── migrations/
+│   │
 │   └── src/
-│       ├── main.ts          # Entry point (CORS, Helmet, ValidationPipe)
-│       ├── app.module.ts    # Root module
-│       ├── auth/            # Auth module (register, login, JWT, OTP)
-│       ├── company/         # Company module (registration, verification)
-│       ├── job/             # Job module (CRUD, search)
-│       ├── application/     # Application module (apply, status)
-│       ├── admin/           # Admin module (dashboard, reports, audit)
-│       ├── message/         # Messaging module
-│       ├── upload/          # File upload module
-│       ├── prisma/          # Prisma service
-│       └── common/          # Guards, decorators, filters, interceptors
+│       ├── main.ts
+│       ├── app.module.ts
+│       ├── auth/
+│       ├── company/
+│       ├── job/
+│       ├── application/
+│       ├── admin/
+│       ├── message/
+│       ├── upload/
+│       ├── prisma/
+│       └── common/
 │
 ├── fe/
-│   └── fe/                  # Frontend - Next.js
-│       ├── app/             # App Router pages
-│       │   ├── page.tsx     # Landing page
-│       │   ├── auth/        # Login & Register pages
-│       │   ├── dashboard/   # Admin, Candidate, Recruiter dashboards
-│       │   └── jobs/        # Job listings & details
-│       ├── components/
-│       │   ├── layout/      # Header, Sidebar, DashboardLayout
-│       │   ├── providers/   # Auth, Theme, Query providers
-│       │   ├── shared/      # JobCard, StatCard, StatusBadge, etc.
-│       │   └── ui/          # shadcn/ui components
-│       ├── hooks/           # Custom hooks (use-jobs, use-admin, etc.)
-│       └── lib/             # API client, constants, utilities
+│   ├── app/
+│   │   ├── page.tsx
+│   │   ├── auth/
+│   │   ├── dashboard/
+│   │   └── jobs/
+│   │
+│   ├── components/
+│   │   ├── layout/
+│   │   ├── providers/
+│   │   ├── shared/
+│   │   └── ui/
+│   │
+│   ├── hooks/
+│   └── lib/
 │
-└── db/                      # Database-related files
+└── db/
+🐳 Docker
 
-Docker
+Start the full application stack:
 
-The docker-compose.yml sets up:
+docker compose up -d --build
 
-PostgreSQL 16 (trusthire-postgres) on port 5432
+Stop services:
 
-User: trusthire
-
-Password: trusthire_secret_2024 (default)
-
-Database: trusthire
-
-Redis 7 (trusthire-redis) on port 6379
-
-Append-only persistence enabled
-
-Backend (trusthire-backend) — NestJS production build
-
-Frontend (trusthire-frontend) — Next.js production build
-
-nginx (trusthire-nginx) — reverse proxy on port 80
-
-# Start services
-docker compose up -d
-
-# Stop services
 docker compose down
 
-# Wipe volumes (reset data)
+Reset containers and volumes:
+
 docker compose down -v
 
-Scripts Reference
+⚠️ docker compose down -v removes persistent database volumes.
 
-Script
+Docker Services
+Service	Port	Purpose
+PostgreSQL	5432	Database
+Redis	6379	Cache / OTP / queues
+Backend	3001	NestJS API
+Frontend	3000	Next.js
+nginx	80	Reverse proxy
 
-Description
+Full Docker application:
 
-npm run dev
+http://localhost
+📜 Scripts
+Command	Description
+npm run dev	Start frontend and backend
+npm run dev:be	Start backend
+npm run dev:fe	Start frontend
+npm run build:be	Build backend
+npm run build:fe	Build frontend
+npm run install:all	Install all dependencies
+cd be && npm run seed	Seed database
+cd be && npm run test	Run unit tests
+cd be && npm run test:e2e	Run e2e tests
+🔒 Security
 
-Start BE + FE concurrently
+TrustHire uses:
 
-npm run dev:be
+JWT authentication
+Argon2 password hashing
+Role-based authorization
+OTP verification
+Helmet security headers
+Audit logging
+Suspicious-activity tracking
+Company and user blocking
+Blacklist management
+Environment-based secrets
+Never Commit
+.env
+Production passwords
+JWT secrets
+AWS credentials
+Private API keys
+Database credentials
+🤝 Contributing
 
-Start backend in watch mode
+Contributions are welcome.
 
-npm run dev:fe
+1. Fork the Repository
 
-Start frontend dev server
+Create your own fork on GitHub.
 
+2. Create a Feature Branch
+git checkout -b feature/your-feature-name
+3. Make Your Changes
+
+Follow the existing project structure and coding conventions.
+
+4. Run Tests
+cd be
+npm run test
+npm run test:e2e
+5. Build the Project
 npm run build:be
-
-Build backend
-
 npm run build:fe
+6. Commit
+git add .
+git commit -m "feat: add your feature"
+7. Push
+git push origin feature/your-feature-name
+8. Open a Pull Request
 
-Build frontend
+Include:
 
-npm run install:all
+What changed
+Why the change was needed
+How it was tested
+Any required environment changes
+🧪 Testing
 
-Install all dependencies (root, be, fe)
+Run backend unit tests:
 
-cd be && npm run seed
+cd be
+npm run test
 
-Seed the database with test data
+Run end-to-end tests:
 
-cd be && npm run test
+npm run test:e2e
 
-Run backend unit tests
+For new features, add or update tests where appropriate.
 
-cd be && npm run test:e2e
+🗺️ Future Improvements
 
-Run backend integration tests
+Potential future improvements include:
 
-Security Notes
-
-Never commit .env files — they contain secrets.
-
-Generate strong secrets with openssl rand -hex 32.
-
-Passwords are hashed with Argon2.
-
-All API routes are protected with JWT + role-based guards where applicable.
-
-License
+AI-powered candidate/job matching
+Automated fraud detection
+Advanced company risk analysis
+Interview scheduling integrations
+Resume parsing
+Candidate recommendation engine
+Recruiter analytics
+Real-time messaging
+Mobile application
+Advanced notification services
+📄 License
 
 This project is licensed under the MIT License.
 
 <div align="center">
-  Built with ❤️ using NestJS, Next.js, Prisma & shadcn/ui
-</div>
-#
+
+Built with ❤️ using NestJS, Next.js, React, Prisma, PostgreSQL, Redis, Docker & shadcn/ui.
+
+TrustHire — Building a safer recruitment ecosystem.
+</div> ```
