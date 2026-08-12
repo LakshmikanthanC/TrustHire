@@ -1,14 +1,22 @@
 # TrustHire — Trusted Recruitment Platform
 
-![TrustHire](https://img.shields.io/badge/TrustHire-Trusted%20Recruitment-blueviolet?style=for-the-badge) 
+<div align="center">
+
+![TrustHire](https://img.shields.io/badge/TrustHire-Trusted%20Recruitment-blueviolet?style=for-the-badge)
 ![NestJS](https://img.shields.io/badge/NestJS-11-red?style=flat-square&logo=nestjs)
-![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js) 
-![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?style=flat-square&logo=prisma) 
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql) 
-![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=flat-square&logo=redis) 
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?style=flat-square&logo=prisma)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql)
+![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=flat-square&logo=redis)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwind-css)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker)
+
+### Connect with verified companies and discover opportunities that match your skills.
+
+**No fake listings. No scams. Just trusted connections.**
+
+</div>
 
 <div align="center">
 
