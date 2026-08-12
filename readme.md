@@ -14,13 +14,9 @@
 
 ### Connect with verified companies and discover opportunities that match your skills.
 
-**No fake listings. No scams. Just trusted connections.**
-
 </div>
 
 <div align="center">
-
-
 
 Connect with verified companies and discover opportunities that match your skills. No fake listings, no scams — just trusted connections.
 
