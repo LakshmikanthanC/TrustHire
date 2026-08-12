@@ -1,0 +1,19 @@
+{
+  "name": "trust-hire",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TrustHire - Full Stack Application",
+  "scripts": {
+    "dev": "concurrently -n be,fe -c cyan,magenta \"npm run dev:be\" \"npm run dev:fe\"",
+    "dev:be": "cd be && npm run start:dev",
+    "dev:fe": "cd fe/fe && npm run dev",
+    "build:be": "cd be && npm run build",
+    "build:fe": "cd fe/fe && npm run build",
+    "install:all": "npm install && cd be && npm install && cd ../fe/fe && npm install",
+    "postinstall": "cd be && npm install && cd ../fe/fe && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
+

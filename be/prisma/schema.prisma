@@ -1,0 +1,251 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CANDIDATE
+  RECRUITER
+  ADMIN
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  EMAIL_VERIFIED
+  PHONE_VERIFIED
+  FULLY_VERIFIED
+}
+
+enum CompanyStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  BLOCKED
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  REMOTE
+  FREELANCE
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWED
+  SHORTLISTED
+  INTERVIEW_SCHEDULED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum AuditAction {
+  LOGIN
+  REGISTER
+  COMPANY_REGISTER
+  COMPANY_APPROVED
+  COMPANY_REJECTED
+  COMPANY_BLOCKED
+  JOB_POSTED
+  JOB_UPDATED
+  JOB_DELETED
+  APPLICATION_SUBMITTED
+  APPLICATION_STATUS_CHANGED
+  RESUME_DOWNLOADED
+  ADMIN_ACTION
+  PASSWORD_CHANGE
+  PROFILE_UPDATE
+  SUSPICIOUS_ACTIVITY
+}
+
+model User {
+  id                 String             @id @default(cuid())
+  email              String             @unique
+  phone              String             @unique
+  password           String
+  name               String
+  role               UserRole           @default(CANDIDATE)
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  emailVerifiedAt    DateTime?
+  phoneVerifiedAt    DateTime?
+  isActive           Boolean            @default(true)
+  refreshToken       String?
+  resume             String?
+  skills             String[]
+  experience         Int?
+  education          String?
+  bio                String?
+  profilePicture     String?
+  linkedin           String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  recruiter         Recruiter?
+  applications      Application[]
+  auditLogs         AuditLog[]
+  sentMessages      Message[]          @relation("SentMessages")
+  receivedMessages  Message[]          @relation("ReceivedMessages")
+
+  @@map("users")
+}
+
+model Company {
+  id                 String        @id @default(cuid())
+  name               String
+  registrationNumber String        @unique
+  gstNumber          String?
+  pan                String?
+  website            String
+  companyEmail       String        @unique
+  address            String
+  city               String
+  state              String
+  pincode            String
+  linkedin           String?
+  logo               String?
+  status             CompanyStatus @default(PENDING)
+  rejectionReason    String?
+  verifiedAt         DateTime?
+  isBlacklisted      Boolean       @default(false)
+  blacklistReason    String?
+  documents          String[]
+  riskScore          Int           @default(0)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  recruiters Recruiter[]
+  jobs       Job[]
+  auditLogs  AuditLog[]
+
+  @@map("companies")
+}
+
+model Recruiter {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  companyId        String
+  name             String
+  email            String   @unique
+  phone            String   @unique
+  designation      String
+  identityVerified Boolean  @default(false)
+  identityDocument String?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("recruiters")
+}
+
+model Job {
+  id               String    @id @default(cuid())
+  companyId        String
+  title            String
+  description      String
+  responsibilities String[]
+  requirements     String[]
+  skills           String[]
+  salaryMin        BigInt?
+  salaryMax        BigInt?
+  experienceMin    Int?
+  experienceMax    Int?
+  location         String
+  jobType          JobType   @default(FULL_TIME)
+  vacancies        Int       @default(1)
+  deadline         DateTime?
+  isActive         Boolean   @default(true)
+  isUrgent         Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  applications Application[]
+
+  @@map("jobs")
+}
+
+model Application {
+  id          String            @id @default(cuid())
+  userId      String
+  jobId       String
+  resume      String?
+  coverLetter String?
+  status      ApplicationStatus @default(PENDING)
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job  Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@map("applications")
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  userId    String?
+  companyId String?
+  action    AuditAction
+  details   String?
+  ipAddress String?
+  userAgent String?
+  metadata  Json?
+  createdAt DateTime    @default(now())
+
+  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+model BlacklistedCompany {
+  id         String   @id @default(cuid())
+  name       String
+  domain     String?
+  email      String?
+  reason     String
+  reportedBy String?
+  createdAt  DateTime @default(now())
+
+  @@map("blacklisted_companies")
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  subject    String
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("info")
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}

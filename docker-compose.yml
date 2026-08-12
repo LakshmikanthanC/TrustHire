@@ -1,0 +1,88 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: trusthire-postgres
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-trusthire}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trusthire_secret_2024}
+      POSTGRES_DB: ${POSTGRES_DB:-trusthire}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-trusthire}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: trusthire-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./be
+    container_name: trusthire-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - '3001'
+    init: true
+
+  frontend:
+    build:
+      context: ./fe/fe
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost/api/v1}
+    container_name: trusthire-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    depends_on:
+      - backend
+    expose:
+      - '3000'
+    init: true
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: trusthire-nginx
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    depends_on:
+      - frontend
+      - backend
+    init: true
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:
